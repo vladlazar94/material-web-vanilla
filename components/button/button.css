@@ -1,0 +1,75 @@
+.md-button {
+    padding: 1rem;
+    position: relative;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: 3px solid grey;
+    border-radius: 1rem;
+}
+
+.md-button__touch-target {
+    position: absolute;
+    inset: -1rem 0; 
+}
+
+.md-button__label {
+    position: relative;
+}
+
+.md-button__focus-ring {
+    display: none;
+    position: absolute;
+    inset: -0.5rem;
+    border: 2px solid black;
+    border-radius: inherit;
+}
+
+.md-button:focus-visible .md-button__focus-ring {
+    display: block;
+}
+
+.md-button__state-layer {
+    position: absolute;
+    inset: 0px;
+    overflow: hidden;
+    border-radius: calc(1rem - 3px);   
+}
+
+.md-button__state-layer::before {
+    content: '';
+    position: absolute;    
+    background-color: black;
+    opacity: 0;
+    inset: 0;
+}
+
+.md-button:hover .md-button__state-layer::before {
+    opacity: 0.08;
+}
+
+.md-button__state-layer::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    translate: -50% -50%;
+    scale: 0;
+    opacity: 0;
+    width: 15rem;
+    height: 15rem;
+    background-color: black;
+    top: var(--md-ripple-surface-pointer-y);
+    left: var(--md-ripple-surface-pointer-x);
+    transition: scale 0s linear;
+}
+
+.md-button__state-layer.md-button__state-layer--pressed::after {
+    scale: 1;
+    opacity: 0.12;
+    transition: scale 0.5s ease-out;
+}
+
+.md-button:hover .md-button__state-layer.md-button__state-layer--pressed::after {
+    opacity: 0.04;
+}

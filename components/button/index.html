@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <title>Material Web Vanilla</title>
+    <script type="module" src="./test.mjs"></script>
+    <link rel="stylesheet" href="./button.css" />
+  </head>
+  <body>
+    <button class="md-button">
+      <span class="md-button__touch-target"></span>
+      <span class="md-button__state-layer"></span>
+      <span class="md-button__focus-ring"></span>
+      <span class="md-button__label">Click me!</span>
+    </button>
+  </body>
+
+  <style>
+    body {
+      display: grid;
+      place-content: center;
+    }
+  </style>
+
+  <script>
+    const button = document.querySelector(".md-button");
+    const stateLayer = button.querySelector(".md-button__state-layer");
+    const rippleActiveClass = "md-button__state-layer--pressed";
+
+    function pointerDown(e) {
+      const stateLayerRect = stateLayer.getBoundingClientRect();
+      const pointerDownX = e.clientX - stateLayerRect.x;
+      const pointerDownY = e.clientY - stateLayerRect.y;
+
+      stateLayer.style = `
+        --md-ripple-surface-pointer-x: ${pointerDownX}px;
+        --md-ripple-surface-pointer-y: ${pointerDownY}px;
+      `;
+
+      stateLayer.classList.add(rippleActiveClass);
+      window.addEventListener("pointerup", pointerUp);
+    }
+
+    function pointerUp(e) {
+      stateLayer.classList.remove(rippleActiveClass);
+      stateLayer.style = "";
+      window.removeEventListener("pointerup", pointerUp);
+    }
+
+    function keyDown(e) {
+      if (e.key !== "Enter") return;
+
+      const stateLayerRect = stateLayer.getBoundingClientRect();
+      const pointerDownX = stateLayerRect.width / 2;
+      const pointerDownY = stateLayerRect.height / 2;
+
+      stateLayer.style = `
+        --md-ripple-surface-pointer-x: ${pointerDownX}px;
+        --md-ripple-surface-pointer-y: ${pointerDownY}px;
+      `;
+
+      stateLayer.classList.add(rippleActiveClass);
+      window.addEventListener("keyup", keyUp);
+    }
+
+    function keyUp(e) {
+      if (e.key !== "Enter") return;
+      stateLayer.classList.remove(rippleActiveClass);
+      window.removeEventListener("keyup", keyUp);
+    }
+
+    button.addEventListener("pointerdown", pointerDown);
+    button.addEventListener("keydown", keyDown);
+  </script>
+</html>
